@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  application-product:
+    build: application-product
+    mem_limit: 512m
+    ports: 
+    - "8080:8080"
+    environment:
+      DB_URL: jdbc:postgresql://product_db:5432/product
+      DB_USER: db_user
+      DB_PASSWORD: contrasecontrasecontra
+    restart: always
+    depends_on:
+      product_db:
+        condition: service_healthy
+  product_db:
+    image: postgres:15-alpine
+    ports:
+      - "5431:5432"
+    environment:
+      POSTGRES_USER: db_user
+      POSTGRES_PASSWORD: contrasecontrasecontra
+      POSTGRES_DB: product
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      # Este comando prueba si la base de datos acepta conexiones
+      test: ["CMD-SHELL", "pg_isready -U db_user -d product"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      
+volumes:
+  postgres_data:
