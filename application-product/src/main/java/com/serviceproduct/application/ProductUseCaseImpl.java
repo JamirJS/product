@@ -1,5 +1,6 @@
 package com.serviceproduct.application;
 
+import com.serviceproduct.domain.exception.InsufficientStockException;
 import com.serviceproduct.domain.model.Product;
 import com.serviceproduct.domain.exception.InvalidPriceException;
 import com.serviceproduct.domain.exception.ProductNotFoundException;
@@ -34,7 +35,7 @@ public class ProductUseCaseImpl implements IProductUseCase {
             throw new InvalidPriceException("The price of the product cannot be negative.");
         }
         if(product.getStock() < product.getMinStock())
-            throw  new InvalidPriceException("The product cannot be registered: current stock "+
+            throw  new InsufficientStockException("The product cannot be registered: current stock "+
                     product.getStock() + " is lower than the minimum required " + product.getMinStock());
         return this.productRepositoryPort.save(product);
     }
