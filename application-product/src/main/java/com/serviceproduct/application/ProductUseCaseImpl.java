@@ -56,9 +56,39 @@ public class ProductUseCaseImpl implements IProductUseCase {
         return this.productRepositoryPort.findByBrand(brand);
     }
 
+    @Override
+    public Product updatePrice(Long id, BigDecimal newPrice) {
+        Product savedProduct = this.getProductOrThrow(id);
+        if(newPrice.compareTo(new BigDecimal("0")) <= 0){
+            throw new InvalidPriceException("The price of the product cannot be negative.");
+        }
+        savedProduct.setPrice(newPrice);
+        return this.productRepositoryPort.save(savedProduct);
+    }
+
+    @Override
+    public Product updateStock(Long id, int newStock) {
+        Product savedProduct = this.getProductOrThrow(id);
+        if(newStock < savedProduct.getMinStock())
+            throw  new InsufficientStockException("The product cannot be registered: current stock "+
+                    newStock + " is lower than the minimum required " + savedProduct.getMinStock());
+        savedProduct.setStock(newStock);
+        return this.productRepositoryPort.save(savedProduct);
+    }
+
+    @Override
+    public Product updateMinStock(Long id, int newMinStock) {
+        Product savedProduct = this.getProductOrThrow(id);
+        if(savedProduct.getStock() < newMinStock)
+            throw  new InsufficientStockException("The product cannot be registered: current stock "+
+                    savedProduct.getStock() + " is lower than the minimum required " + newMinStock);
+        savedProduct.setMinStock(newMinStock);
+        return this.productRepositoryPort.save(savedProduct);
+    }
+
     private Product getProductOrThrow(Long id) {
         // Código repetido ahora centralizado
         return this.productRepositoryPort.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Produc with " + id + " not found."));
+                .orElseThrow(() -> new ProductNotFoundException("Produc with ID " + id + " not found."));
     }
 }
