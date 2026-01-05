@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -24,26 +25,27 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleProductEntityNotFound(ProductNotFoundException ex){
+    public ResponseEntity<Map<String, String>> handleProductEntityNotFound(ProductNotFoundException ex, WebRequest request){
         logger.warn("Product Not found: {}", ex.getMessage(), ex);
 
-        Map<String, String> errorResponse= Collections.singletonMap("error", ex.getMessage());
+
+        Map<String, String> errorResponse= this.formatStandarResponseAndPath(ex.getMessage(), HttpStatus.NOT_FOUND, request);
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(InsufficientStockException.class)
-    public ResponseEntity<Map<String, String>> handleInsufficientStock(InsufficientStockException ex){
+    public ResponseEntity<Map<String, String>> handleInsufficientStock(InsufficientStockException ex, WebRequest request){
         logger.warn("Insufficient Stock: {}", ex.getMessage(), ex);
 
-        Map<String, String> errorResponse = Collections.singletonMap("error", ex.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        Map<String, String> errorResponse= this.formatStandarResponseAndPath(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY, request);
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(InvalidPriceException.class)
-    public ResponseEntity<Map<String, String>> handlerInvalidPrice(InvalidPriceException ex){
+    public ResponseEntity<Map<String, String>> handlerInvalidPrice(InvalidPriceException ex, WebRequest request){
         logger.warn("Invalid Price: {}", ex.getMessage(), ex);
 
-        Map<String, String> errorResponse = Collections.singletonMap("error", ex.getMessage());
+        Map<String, String> errorResponse= this.formatStandarResponseAndPath(ex.getMessage(), HttpStatus.BAD_REQUEST, request);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -57,7 +59,7 @@ public class GlobalExceptionHandler {
             String paramName = propertyName.substring(propertyName.lastIndexOf('.') + 1);
             errors.put(paramName, violation.getMessage());
         });
-        return new ResponseEntity<>(this.formatResponse(errors), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(this.formatResponse(errors, HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -67,14 +69,24 @@ public class GlobalExceptionHandler {
                 errors.put(error.getField(), error.getDefaultMessage());
         });
 
-        return new ResponseEntity<>(this.formatResponse(errors), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(this.formatResponse(errors, HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
     }
 
-    private Map<String, Object> formatResponse(Map<String, Object> errors){
+    private Map<String, Object> formatResponse(Map<String, Object> errors, HttpStatus status){
         Map<String, Object> response = new LinkedHashMap<>(); //linkedhashmap xq respeta el orden
         response.put("timestamp", LocalDate.now().toString());
-        response.put("status", HttpStatus.BAD_REQUEST.value());
+        response.put("status", status.value());
         response.put("errors", errors);
+        return response;
+    }
+
+    private Map<String, String> formatStandarResponseAndPath(String error, HttpStatus status, WebRequest request){
+        String path = request.getDescription(false).replace("uri=", "");
+        Map<String, String> response = new LinkedHashMap<>();
+        response.put("timestamp", LocalDate.now().toString());
+        response.put("status", String.valueOf(status.value()));
+        response.put("message", error);
+        response.put("path", path);
         return response;
     }
 
