@@ -63,7 +63,7 @@ Ejemplo de un test de validación:
     }
 
 ## 👤 Autor
-JamirJS - [GitHub Profile](https://github.com/JamirJS)
+JamirJS - [GitHub](https://github.com/JamirJS)
 
 ## 🚀 API Reference
 
