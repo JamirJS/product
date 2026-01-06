@@ -8,8 +8,8 @@ services:
     - "8096:8096"
     environment:
       DB_URL: jdbc:postgresql://product_db:5432/product
-      DB_USER: user
-      DB_PASSWORD: qwqwqwqwqwqwqw
+      DB_USER: #user
+      DB_PASSWORD: #contraseña
     restart: always
     depends_on:
       product_db:
@@ -19,8 +19,8 @@ services:
     ports:
       - "5431:5432"
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: qwqwqwqwqwqwqw
+      POSTGRES_USER: #user
+      POSTGRES_PASSWORD: #contraseña
       POSTGRES_DB: product
     restart: always
     volumes:
