@@ -1,4 +1,5 @@
 
+
 # Product Management System (Hexagonal Architecture)
 
 Este es un microservicio para la gestión de productos, desarrollado siguiendo los principios de la Arquitectura Hexagonal (Puertos y Adaptadores). El objetivo es mantener la lógica de negocio aislada de las dependencias externas como bases de datos o APIs.
@@ -28,8 +29,35 @@ El proyecto se divide en tres capas principales:
     Docker
 
     Postgres
-    
- 
+
+
+
+## 🐳 Ejecución con Docker
+> **Requisitos:**  
+> - Docker y Docker Compose instalados  
+> - Configurar el usuario y la contraseña de la base de datos en el archivo `docker-compose.yml`
+Clona el repositorio:
+```bash
+  git clone https://github.com/JamirJS/product.git
+```
+
+Accede a la carpeta del proyecto:
+```bash
+  cd product
+```
+
+Inicia la aplicación:
+```bash
+  docker compose up --build
+```
+
+Detén la aplicación:
+```bash
+  docker compose down
+```
+
+
+
 ## 🧪 Testing Strategy
 Se ha implementado una suite de pruebas robusta enfocada en la lógica de negocio dentro de la capa de aplicación.
 
