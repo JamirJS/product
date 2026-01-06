@@ -5,11 +5,11 @@ services:
     build: application-product
     mem_limit: 512m
     ports: 
-    - "8080:8080"
+    - "8096:8096"
     environment:
       DB_URL: jdbc:postgresql://product_db:5432/product
-      DB_USER: #user
-      DB_PASSWORD: #contraseña
+      DB_USER: user
+      DB_PASSWORD: qwqwqwqwqwqwqw
     restart: always
     depends_on:
       product_db:
@@ -19,15 +19,15 @@ services:
     ports:
       - "5431:5432"
     environment:
-      POSTGRES_USER: #user
-      POSTGRES_PASSWORD: #contraseña
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: qwqwqwqwqwqwqw
       POSTGRES_DB: product
     restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
       # Este comando prueba si la base de datos acepta conexiones
-      test: ["CMD-SHELL", "pg_isready -U db_user -d product"]
+      test: ["CMD-SHELL", "pg_isready -U user -d product"]
       interval: 5s
       timeout: 5s
       retries: 5

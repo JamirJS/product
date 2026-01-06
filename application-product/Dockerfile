@@ -14,8 +14,8 @@ FROM eclipse-temurin:17-jre
 WORKDIR /app
 
 #Render asigna el puerto en la variable de entorno PORT
-ENV PORT=8050
-EXPOSE 8050
+ENV PORT=8096
+EXPOSE 8096
 
 #Copiamos el jar build
 COPY --from=build /app/target/*.jar app_product.jar
