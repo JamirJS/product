@@ -64,43 +64,11 @@ Ejemplo de un test de validación:
 
 ## 👤 Autor
 JamirJS - [GitHub Profile](https://github.com/JamirJS)
-## API 
-
-#### Get all product
-
-```http
-  GET /api/product
-```
-
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
-
-#### Get item
-
-```http
-  GET /api/items/${id}
-```
-
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id of item to fetch |
-
-#### add(num1, num2)
-
-Takes two numbers and returns the sum.
 
 ## 🚀 API Reference
 
-### Obtener todos los productos
-`GET /products`
-
-| Parámetro | Tipo     | Descripción                |
-| :-------- | :------- | :------------------------- |
-| `limit`   | `string` | **Opcional**. Límite de resultados |
-
 ### Obtener un producto
-`GET /products/${id}`
+`GET /api/products/${id}`
 
 | Parámetro | Tipo     | Descripción                       |
 | :-------- | :------- | :-------------------------------- |
