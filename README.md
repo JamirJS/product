@@ -1,5 +1,4 @@
 
-
 # Product Management System (Hexagonal Architecture)
 
 Este es un microservicio para la gestión de productos, desarrollado siguiendo los principios de la Arquitectura Hexagonal (Puertos y Adaptadores). El objetivo es mantener la lógica de negocio aislada de las dependencias externas como bases de datos o APIs.
@@ -95,8 +94,10 @@ JamirJS - [GitHub](https://github.com/JamirJS)
 
 ## 🚀 API Reference
 
+http://localhost:8096/swagger-ui.html
+
 ### Obtener un producto
-`GET /api/products/${id}`
+`GET http://localhost:8096/api/products/{id}`
 
 | Parámetro | Tipo     | Descripción                       |
 | :-------- | :------- | :-------------------------------- |
@@ -105,7 +106,7 @@ JamirJS - [GitHub](https://github.com/JamirJS)
 #### Ejemplo de respuesta:
 ```json
 {
-  "id": "123",
+  "id": 221,
   "code": 432,
   "name": "Laptop Gaming",
   "brand": "milk",
